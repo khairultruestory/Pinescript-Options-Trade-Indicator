@@ -1,0 +1,22 @@
+//@version=5
+indicator("Selected Percentage from Current Price", overlay=true)
+
+// Define the percentage value
+selectedPercentage = input.float(0.3, title="Selected Percentage", minval=0, maxval=100)
+selectedPreviousDay = input.int(1,title = "Selected Previous Day")
+// Get the current price
+currentPrice = (close)
+previousPrice=(close[selectedPreviousDay])
+
+// Calculate the selected percentage level
+breakPrice = close * (1 - selectedPercentage / 100) 
+previousBreakPrice = close[1] * (1 - selectedPercentage / 100) 
+
+upTrend=close[1]<close
+downTrend=close[1]>close
+//condition for fail breakeven
+failBreakeven=previousBreakPrice>close
+
+plot(breakPrice, title="percent", color=color.purple, linewidth=2)
+plotshape(failBreakeven,style = shape.triangledown,location = location.belowbar,color=color.red)
+//plotshape(upTrend,style=shape.triangleup,location=location.abovebar, color=color.green)
