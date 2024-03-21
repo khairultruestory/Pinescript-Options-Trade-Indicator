@@ -1,0 +1,26 @@
+// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © khai
+
+//@version=5
+indicator("Selected Percentage from Current Price", overlay=true)
+
+// Define the percentage value
+breakevenPercent = input.float(0.3, title="Breakeven Percent", minval=0, maxval=100)
+dte = input.int(1,title = "Day To Expiry")
+
+// Get the prices
+currentPrice = (close)
+dtePrice=(close[dte])
+
+// Calculate price level
+breakevenPrice = close * (1 - breakevenPercent / 100) 
+previousBreakPrice = close[dte] * (1 - breakevenPercent / 100) 
+
+upTrend=close[1]<close
+downTrend=close[1]>close
+//condition for fail breakeven
+failBreakeven=previousBreakPrice>close
+
+plot(previousBreakPrice, title="percent", color=color.purple, linewidth=1)
+plotshape(failBreakeven,style = shape.triangledown,location = location.belowbar,color=color.red)
+//plotshape(upTrend,style=shape.triangleup,location=location.abovebar, color=color.green)
